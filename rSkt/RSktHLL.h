@@ -6,6 +6,7 @@ private:
     HLLEst **p_HLL;
     HLLEst **c_HLL;
     uint32_t seed[10];
+    uint32_t g_seed;
     int hash_num;
     int unit_num;
     int unit_size;
@@ -30,14 +31,17 @@ public:
         for(int i=0;i<hash_num;i++){
             seed[i] = i;
         }
+        g_seed = 1239;
 
     }
 
     void Insert(uint32_t flowID, uint32_t elemID){
         int res;
+        int g_flag;
         for(int i=0;i<hash_num;i++){
             res = murmurhash((const char*)&flowID, 4,seed[i]) % est_number;
-            if( (res&0x00000001) == 0){
+            g_flag = murmurhash((const char*)&flowID,4,g_seed) % 2;
+            if( g_flag == 0){
                 HLLEstInsert(p_HLL[res],elemID);
             }else{
                 HLLEstInsert(c_HLL[res], elemID);
@@ -65,7 +69,8 @@ public:
         }
 
         res = murmurhash((const char*)&flowID, 4,seed[pos]) % est_number;
-        if( (res&0x00000001) == 0){
+        int g_flag = murmurhash((const char*)&flowID,4,g_seed) % 2;
+        if( g_flag == 0){
             value = p_val - c_val;
         }else{
             value = c_val - p_val;

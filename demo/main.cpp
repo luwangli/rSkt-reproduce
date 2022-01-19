@@ -46,6 +46,7 @@ int main(){
     insert_throughput = (double)1000.0*pkt_num / timediff;
 
     int query_car = 0;
+
     for(int i =0;i<flow_num;i++){
         query_car = cskt.PointQuery(Bench[i].first);
       //  cout<<"flowID: "<<Bench[i].first<<"\t real car: "<<Bench[i].second<<"\t estimated car: "<<query_car<<endl;
@@ -107,7 +108,7 @@ int main(){
     re_error = 0;
     for(int i =0;i<flow_num;i++){
         query_car = rskt.PointQuery(Bench[i].first);
-      //  cout<<"flowID: "<<Bench[i].first<<"\t real car: "<<Bench[i].second<<"\t estimated car: "<<query_car<<endl;
+    //    cout<<"flowID: "<<Bench[i].first<<"\t real car: "<<Bench[i].second<<"\t estimated car: "<<query_car<<endl;
         ab_error += abs((int)Bench[i].second - (int)query_car);
         re_error += abs((int)Bench[i].second - (int)query_car) * 1.0 / Bench[i].second;
     }
@@ -118,7 +119,7 @@ int main(){
     cout<<memory/(8*1024)<<"\t"<<insert_throughput<<"\t"<<avg_ab_error<<"\t"<<avg_re_error<<endl;
 
     outFile.open("result.csv",ios::app);
-    outFile <<filename<<",rskt,"<<memory/(8*1024)<<","<<d<<","<<insert_throughput
+    outFile <<filename<<",rskthll,"<<memory/(8*1024)<<","<<d<<","<<insert_throughput
             <<","<<avg_ab_error<<","<<avg_re_error<<endl;
     outFile.close();
 
